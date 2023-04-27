@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 
 export class Footer extends Component {
   constructor(props) {

@@ -1,0 +1,13 @@
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+
+#app {
+  padding: 10px;
+}
+
+.hidden {
+  display: none;
+}
