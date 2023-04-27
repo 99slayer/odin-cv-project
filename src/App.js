@@ -4,7 +4,6 @@ import { Info } from './components/Info'
 import { Experience } from './components/Experience'
 import { Education } from './components/Education'
 import { Input } from './components/Input'
-import { Footer } from './components/Footer'
 
 class App extends Component {
   constructor() {
@@ -18,8 +17,7 @@ class App extends Component {
         <Info></Info>
         <Experience></Experience>
         <Education></Education>
-        <Input type="text" inputID="test"></Input>
-        <Footer></Footer>
+        <Input inputID="test" tag="textarea"></Input>
       </div>
     );
   }
