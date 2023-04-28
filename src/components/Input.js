@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-// props = inputID/tag/inputType
+// props = inputID/tag/inputType/labelText
 export class Input extends Component {
   constructor(props) {
     super(props);
@@ -12,8 +12,10 @@ export class Input extends Component {
     };
 
     this.handleChange = this.handleChange.bind(this);
+    this.handleKeyDown = this.handleKeyDown.bind(this);
     this.submitInput = this.submitInput.bind(this);
     this.editInput = this.editInput.bind(this);
+    this.createLabel = this.createLabel.bind(this);
     this.createField = this.createField.bind(this);
   };
 
@@ -21,8 +23,12 @@ export class Input extends Component {
     this.setState({
       input: e.target.value
     });
-    console.log('test');
-    console.log(this.state.input);
+  };
+
+  handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      this.submitInput();
+    };
   };
 
   submitInput = (e) => {
@@ -42,15 +48,25 @@ export class Input extends Component {
     });
   };
 
+  createLabel = (id, text) => {
+    if (text === '' || text === undefined) {
+      return;
+    } else {
+      return <label htmlFor={id + '-input-field'}>{text}</label>
+    }
+  }
+
   createField = (tag, addClass, id, inputType = null) => {
     if (tag === 'input') {
-      return <input className={addClass} id={id + '-input-field'} type={inputType} onChange={this.handleChange}></input>
+      return <input className={addClass} id={id + '-input-field'} type={inputType} onChange={this.handleChange} onKeyDown={this.handleKeyDown}></input>
     } else if (tag === 'textarea') {
-      return <textarea className={addClass} id={id + '-input-field'} onChange={this.handleChange}></textarea>
+      return <textarea className={addClass} id={id + '-input-field'} onChange={this.handleChange} onKeyDown={this.handleKeyDown}></textarea>
     };
   };
 
   render() {
+    const {tag, inputID, inputType, labelText} = this.props
+
     let x = null;
     let y = 'hidden';
 
@@ -60,10 +76,11 @@ export class Input extends Component {
     };
 
     return (
-      <div id={this.props.inputID}>
-        {this.createField(this.props.tag, x, this.props.inputID, this.props.inputType)};
+      <div className="input-cont" id={inputID + '-input'}>
+        {this.createLabel(inputID, labelText)}
+        {this.createField(tag, x, inputID, inputType)}
         <p className={y} onClick={this.editInput}>{this.state.saved}</p>
-        <button className={x} id={this.props.inputID + '-submit-btn'} onClick={this.submitInput}>SUBMIT</button>
+        <button className={x} id={inputID + '-submit-btn'} onClick={this.submitInput}>SUBMIT</button>
       </div>
     );
   };
