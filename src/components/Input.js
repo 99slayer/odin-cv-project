@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import '../styles/Input.css';
 
 // props = inputID/tag/inputType/labelText
 export class Input extends Component {

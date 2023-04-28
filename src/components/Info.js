@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import uniqid from 'uniqid';
 import { Input } from './Input';
+import '../styles/Info.css';
 
 export class Info extends Component {
   constructor(props) {

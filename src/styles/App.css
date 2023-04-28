@@ -1,0 +1,8 @@
+#app {
+  margin-left: auto;
+  margin-right: auto;
+  height: 100vh;
+  width: 50vw;
+  padding: 10px;
+  background-color: rgb(175, 175, 175);
+}

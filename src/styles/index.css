@@ -4,9 +4,9 @@
   box-sizing: border-box;
 }
 
-#app {
-  padding: 10px;
-}
+.editable {}
+
+.editable:hover {}
 
 .hidden {
   display: none;
