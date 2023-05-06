@@ -59,12 +59,12 @@ export class Info extends Component {
   };
 
   render() {
-    let x = 'hidden';
-    let y = null;
+    let x = null;
+    let y = 'hidden';
 
     if (this.state.editing) {
-      x = null;
-      y = 'hidden';
+      x = 'hidden';
+      y = null;
     };
 
     return (
@@ -83,9 +83,9 @@ export class Info extends Component {
           <ul id='info-link-list'>
             {this.state.links.map((link) => { return <li className='link' key={link.id}>{link.link}</li> })}
           </ul>
-          <input id='link-input' className={x} type='text' value={this.state.input.link} onChange={this.handleChange} onKeyDown={this.handleKeyDown}></input>
-          <button id='submit-btn' className={x} onClick={this.addLink}>ADD LINK</button>
-          <button id='add-new-btn' className={y} onClick={this.startEditing}>NEW LINK</button>
+          <input id='link-input' className={y} type='text' value={this.state.input.link} onChange={this.handleChange} onKeyDown={this.handleKeyDown}></input>
+          <button id='submit-btn' className={y} onClick={this.addLink}>ADD LINK</button>
+          <button id='add-new-btn' className={x} onClick={this.startEditing}>NEW LINK</button>
         </div>
 
         <div id='info-introduction'>
