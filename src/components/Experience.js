@@ -42,17 +42,35 @@ export class Experience extends Component {
   };
 };
 
+// onMouseEnter
+// onMouseLeave
+
 class Job extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       id: uniqid(),
-      tasks: []
+      tasks: [],
+      active: false
     }
 
+    this.jobActive = this.jobActive.bind(this);
+    this.jobInactive = this.jobInactive.bind(this);
     this.addTask = this.addTask.bind(this);
     this.removeTask = this.removeTask.bind(this);
+  }
+
+  jobActive = () => {
+    this.setState({
+      active: true
+    })
+  }
+
+  jobInactive = () => {
+    this.setState({
+      active: false
+    })
   }
 
   addTask = () => {
@@ -74,8 +92,7 @@ class Job extends Component {
     const { remove, jobIndex } = this.props
 
     return (
-      // have buttons disappear when job is blured
-      <li id={'job-' + this.state.id} className='job'>
+      <li id={'job-' + this.state.id} className='job' onMouseEnter={this.jobActive} onMouseLeave={this.jobInactive}>
         <div id={'job-input-' + this.state.id}>
           <form>
             <div>
@@ -86,10 +103,10 @@ class Job extends Component {
             <ul>
               {this.state.tasks.map((task, index) => { return <Task key={task} remove={this.removeTask} taskIndex={index}></Task> })}
             </ul>
-            <button type='button' onClick={this.addTask}>NEW TASK</button>
+            <button className={`${this.state.active ? '' : 'hidden'}`} type='button' onClick={this.addTask}>NEW TASK</button>
           </form>
         </div>
-        <button type='button' onMouseDown={() => remove(jobIndex)}>X</button>
+        <button className={`${this.state.active ? '' : 'hidden'}`} type='button' onMouseDown={() => remove(jobIndex)}>X</button>
       </li>
     )
   }

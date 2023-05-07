@@ -1,3 +1,11 @@
+p {
+  display: inline;
+}
+
+p:hover {
+  cursor: pointer;
+}
+
 .job {
   border: 2px solid black;
 }
