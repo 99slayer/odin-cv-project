@@ -34,7 +34,7 @@ export class Experience extends Component {
       <div>
         <h2>EXPERIENCE</h2>
         <ul>
-          {this.state.jobs.map((job) => { return <Job key={job} remove={this.removeJob} jobID={job}></Job> })}
+          {this.state.jobs.map((job, index) => { return <Job key={job} remove={this.removeJob} jobIndex={index}></Job> })}
         </ul>
         <button onClick={this.addJob}>ADD JOB</button>
       </div>
@@ -68,12 +68,14 @@ class Job extends Component {
     this.setState({
       tasks: copy
     });
-  }
+  };
 
   render() {
+    const { remove, jobIndex } = this.props
+
     return (
       // have buttons disappear when job is blured
-      <li id={'job-' + this.state.id}>
+      <li id={'job-' + this.state.id} className='job'>
         <div id={'job-input-' + this.state.id}>
           <form>
             <div>
@@ -82,12 +84,12 @@ class Job extends Component {
               <BasicInput></BasicInput>
             </div>
             <ul>
-              {this.state.tasks.map(task => { return <Task key={task} remove={this.removeTask} taskID={task}></Task> })}
+              {this.state.tasks.map((task, index) => { return <Task key={task} remove={this.removeTask} taskIndex={index}></Task> })}
             </ul>
             <button type='button' onClick={this.addTask}>NEW TASK</button>
           </form>
         </div>
-        <button type='button' onClick={() => this.props.remove(this.props.jobID)}>X</button>
+        <button type='button' onMouseDown={() => remove(jobIndex)}>X</button>
       </li>
     )
   }
@@ -203,11 +205,13 @@ class Task extends Component {
   };
 
   render() {
+    const { remove, taskIndex } = this.props
+
     return (
       <li>
-        <div>
-          <input ref={this.inputRef} value={this.state.text} onChange={this.handleChange} onKeyDown={this.handleKeyDown}></input>
-          <button type='button' onClick={() => this.props.remove(this.props.taskID)}>X</button>
+        <div className={`${this.state.editing ? '' : 'hidden'}`}>
+          <input ref={this.inputRef} value={this.state.text} onChange={this.handleChange} onBlur={this.display} onKeyDown={this.handleKeyDown}></input>
+          <button type='button' onMouseDown={() => remove(taskIndex)}>X</button>
         </div>
         <p className={`${this.state.editing ? 'hidden' : ''}`} value={this.state.text} onClick={this.edit}>{this.state.text}</p>
       </li>
