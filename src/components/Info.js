@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import uniqid from 'uniqid';
-import { Input } from './Input';
+import { BasicInput } from './BasicInput';
+import { BasicTextarea } from './BasicTextarea';
 import '../styles/Info.css';
 
 export class Info extends Component {
@@ -59,37 +60,30 @@ export class Info extends Component {
   };
 
   render() {
-    let x = null;
-    let y = 'hidden';
-
-    if (this.state.editing) {
-      x = 'hidden';
-      y = null;
-    };
-
     return (
       <div id='info'>
         <div id='info-name'>
-          <Input inputID="name" tag="input" inputType="text" labelText="Name"></Input>
+          <BasicInput placeholder='Name'></BasicInput>
         </div>
 
         <div id='info-personal'>
-          <Input inputID="address" tag="input" inputType="text" labelText="Address"></Input>
-          <Input inputID="phone" tag="input" inputType="number" labelText="Number"></Input>
-          <Input inputID="email" tag='input' inputType="text" labelText="Email"></Input>
+          <BasicInput placeholder='Address'></BasicInput>
+          <BasicInput placeholder='Phone Number'></BasicInput>
+          <BasicInput placeholder='Email'></BasicInput>
         </div>
 
         <div id='info-links'>
+          {/* LINK SECTION MUST BE REDONE */}
           <ul id='info-link-list'>
+            {/* maybe an anchor tag? */}
             {this.state.links.map((link) => { return <li className='link' key={link.id}>{link.link}</li> })}
           </ul>
-          <input id='link-input' className={y} type='text' value={this.state.input.link} onChange={this.handleChange} onKeyDown={this.handleKeyDown}></input>
-          <button id='submit-btn' className={y} onClick={this.addLink}>ADD LINK</button>
-          <button id='add-new-btn' className={x} onClick={this.startEditing}>NEW LINK</button>
+          <input id='link-input' className={`${this.state.editing ? '' : 'hidden'}`} type='text' value={this.state.input.link} onChange={this.handleChange} onKeyDown={this.handleKeyDown}></input>
+          <button id='add-new-btn' onClick={this.startEditing}>NEW LINK</button>
         </div>
 
         <div id='info-introduction'>
-          <Input inputID="introduction" tag="textarea" labelText="Introduction"></Input>
+          <BasicTextarea placeholder='Introduce yourself'></BasicTextarea>
         </div>
       </div>
     );
