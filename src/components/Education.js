@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Input } from './Input';
+// import { Input } from './Input';
 import '../styles/Education.css';
 
 export class Education extends Component {
@@ -10,8 +10,8 @@ export class Education extends Component {
   render() {
     return (
       <div>
-        <h2>Education</h2>
-        <button>NEW</button>
+        <h2>EDUCATION</h2>
+        <button>NEW EDUCATION</button>
       </div>
     );
   };

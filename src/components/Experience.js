@@ -31,19 +31,16 @@ export class Experience extends Component {
 
   render() {
     return (
-      <div>
+      <div id='experience'>
         <h2>EXPERIENCE</h2>
-        <ul>
+        <ul id='job-container'>
           {this.state.jobs.map((job, index) => { return <Job key={job} remove={this.removeJob} jobIndex={index}></Job> })}
         </ul>
-        <button onClick={this.addJob}>ADD JOB</button>
+        <button id='new-job-btn' onClick={this.addJob}>NEW JOB</button>
       </div>
     );
   };
 };
-
-// onMouseEnter
-// onMouseLeave
 
 class Job extends Component {
   constructor(props) {
@@ -88,33 +85,33 @@ class Job extends Component {
     });
   };
 
+  // make sure to sort out any word wrapping issuse
+
   render() {
     const { remove, jobIndex } = this.props
 
     return (
       <li id={'job-' + this.state.id} className='job' onMouseEnter={this.jobActive} onMouseLeave={this.jobInactive}>
-        <div id={'job-input-' + this.state.id}>
-          <form>
-            <div>
-              <BasicInput></BasicInput>
-              <BasicInput></BasicInput>
-              <BasicInput></BasicInput>
-            </div>
-            <ul>
-              {this.state.tasks.map((task, index) => { return <Task key={task} remove={this.removeTask} taskIndex={index}></Task> })}
-            </ul>
-            <button className={`${this.state.active ? '' : 'hidden'}`} type='button' onClick={this.addTask}>NEW TASK</button>
-          </form>
-        </div>
-        <button className={`${this.state.active ? '' : 'hidden'}`} type='button' onMouseDown={() => remove(jobIndex)}>X</button>
+        <form className='job-inputs'>
+          <div className='basic-inputs'>
+            <BasicInput setClass='job-time' placeholder='Job time period'></BasicInput>
+            <BasicInput setClass='job-title' placeholder='Job title'></BasicInput>
+            <BasicInput setClass='job-location' placeholder='Job location'></BasicInput>
+          </div>
+          <ul className='task-container'>
+            {this.state.tasks.map((task, index) => { return <Task key={task} remove={this.removeTask} taskIndex={index}></Task> })}
+          </ul>
+          <button className={`${this.state.active ? '' : 'hidden'} new-task-btn`} type='button' onClick={this.addTask}>NEW TASK</button>
+        </form>
+        <button className={`${this.state.active ? '' : 'hidden'} remove-btn`} type='button' onMouseDown={() => remove(jobIndex)}>X</button>
       </li>
     )
   }
 }
 
 class BasicInput extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       text: '',
@@ -162,10 +159,11 @@ class BasicInput extends Component {
   };
 
   render() {
+    const { placeholder, setClass } = this.props;
+
     return (
-      <div>
-        <input className={`${this.state.editing ? '' : 'hidden'}`} ref={this.inputRef} value={this.state.text} onChange={this.handleChange} onKeyDown={this.handleKeyDown} onBlur={this.display}></input>
-        {/* need p elements to be inline not block */}
+      <div className={setClass}>
+        <input className={`${this.state.editing ? '' : 'hidden'}`} ref={this.inputRef} size='20' placeholder={placeholder} value={this.state.text} onChange={this.handleChange} onKeyDown={this.handleKeyDown} onBlur={this.display}></input>
         <p className={`${this.state.editing ? 'hidden' : ''}`} onClick={this.edit}>{this.state.text}</p>
       </div>
     )
@@ -225,10 +223,10 @@ class Task extends Component {
     const { remove, taskIndex } = this.props
 
     return (
-      <li>
-        <div className={`${this.state.editing ? '' : 'hidden'}`}>
+      <li className='task'>
+        <div className={`${this.state.editing ? '' : 'hidden'} task-input`}>
           <input ref={this.inputRef} value={this.state.text} onChange={this.handleChange} onBlur={this.display} onKeyDown={this.handleKeyDown}></input>
-          <button type='button' onMouseDown={() => remove(taskIndex)}>X</button>
+          <button className='remove-task-btn' type='button' onMouseDown={() => remove(taskIndex)}>X</button>
         </div>
         <p className={`${this.state.editing ? 'hidden' : ''}`} value={this.state.text} onClick={this.edit}>{this.state.text}</p>
       </li>
