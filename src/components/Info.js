@@ -22,9 +22,14 @@ export class Info extends Component {
     })
   };
 
-  removeLink = () => {
+  removeLink = (id) => {
+    const copy = [...this.state.links];
+    copy.splice(id, 1);
 
-  }
+    this.setState({
+      links: copy
+    });
+  };
 
   render() {
     return (
@@ -42,7 +47,7 @@ export class Info extends Component {
 
         <div id='info-links'>
           <ul id='info-link-list'>
-            {this.state.links.map((link, index) => { return <Link key={link} linkIndex={index}></Link> })}
+            {this.state.links.map((link, index) => { return <Link key={link} linkIndex={index} removeLink={this.removeLink}></Link> })}
           </ul>
           <button id='add-new-btn' onClick={this.addLink}>NEW LINK</button>
         </div>
@@ -56,8 +61,8 @@ export class Info extends Component {
 };
 
 class Link extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       text: '',
@@ -105,11 +110,13 @@ class Link extends Component {
   };
 
   render() {
+    const { removeLink, linkIndex } = this.props
+
     return (
       <li className='link'>
         <div className={`${this.state.editing ? '' : 'hidden'}`}>
           <input ref={this.linkRef} value={this.state.text} type='text' onChange={this.handleChange} onBlur={this.display} onKeyDown={this.handleKeyDown}></input>
-          <button>X</button>
+          <button type='button' onMouseDown={ () => removeLink(linkIndex)}>X</button>
         </div>
         <a className={`${this.state.editing ? 'hidden' : ''}`} onClick={this.edit}>{this.state.text}</a>
       </li>
