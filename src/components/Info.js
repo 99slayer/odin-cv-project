@@ -31,6 +31,7 @@ export class Info extends Component {
       <div id='info'>
         <div id='info-name'>
           <BasicInput placeholder='Name'></BasicInput>
+          <hr className='name-divider'></hr>
         </div>
 
         <div id='info-personal'>
@@ -47,7 +48,7 @@ export class Info extends Component {
         </div>
 
         <div id='info-introduction'>
-          <BasicTextarea placeholder='Introduce yourself'></BasicTextarea>
+          <BasicTextarea placeholder='Introduce yourself' setClass='intro-textarea'></BasicTextarea>
         </div>
       </div>
     );

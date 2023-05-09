@@ -120,7 +120,7 @@ class Task extends Component {
       editing: true
     }
 
-    this.inputRef = React.createRef();
+    this.textareaRef = React.createRef();
 
     this.handleChange = this.handleChange.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
@@ -155,7 +155,7 @@ class Task extends Component {
       editing: true
     },
     function () {
-      this.inputRef.current.focus();
+      this.textareaRef.current.focus();
     }
     );
   };
@@ -165,8 +165,8 @@ class Task extends Component {
 
     return (
       <li className='task'>
-        <div className={`${this.state.editing ? '' : 'hidden'} task-input`}>
-          <input ref={this.inputRef} value={this.state.text} onChange={this.handleChange} onBlur={this.display} onKeyDown={this.handleKeyDown}></input>
+        <div className={`${this.state.editing ? '' : 'hidden'} task-textarea`}>
+          <textarea ref={this.textareaRef} value={this.state.text} onChange={this.handleChange} onBlur={this.display} onKeyDown={this.handleKeyDown}></textarea>
           <button className='remove-task-btn' type='button' onMouseDown={() => remove(taskIndex)}>X</button>
         </div>
         <p className={`${this.state.editing ? 'hidden' : ''}`} value={this.state.text} onClick={this.edit}>{this.state.text}</p>

@@ -34,7 +34,7 @@ p:hover {
 .job-inputs {
   grid-column: 1/2;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 2fr;
 }
 
 .remove-btn {
@@ -45,12 +45,11 @@ p:hover {
 }
 
 .basic-inputs {
-
   grid-row: 1/2;
   grid-column: 1/5;
   display: grid;
   grid-template-rows: repeat(2, 1fr);
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 2fr;
 }
 
 .job-time {
@@ -71,16 +70,19 @@ p:hover {
   grid-column: 2/6;
 }
 
-.task {
-  list-style-type: disc;
+.task-textarea {
+  display: flex;
+  align-items: center;
 }
 
-.task-input {
-  display: flex;
+.task-textarea textarea {
+  width: 100%;
 }
 
 .remove-task-btn {
+  height: 20px;
   width: 20px;
+  margin-left: 10px;
 }
 
 .new-task-btn {
