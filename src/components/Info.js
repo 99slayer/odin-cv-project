@@ -9,55 +9,22 @@ export class Info extends Component {
     super(props);
 
     this.state = {
-      input: {
-        link: '',
-        id: uniqid()
-      },
-      links: [],
-      editing: false
+      links: []
     };
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleKeyDown = this.handleKeyDown.bind(this);
-    this.startEditing = this.startEditing.bind(this);
     this.addLink = this.addLink.bind(this);
-  };
-
-  handleChange = (e) => {
-    this.setState({
-      input: {
-        link: e.target.value,
-        id: this.state.input.id
-      }
-    });
-  };
-
-  handleKeyDown = (e) => {
-    if (e.key === 'Enter') {
-      this.addLink();
-    };
-  };
-
-  startEditing = (e) => {
-    this.setState({
-      editing: true
-    });
+    this.removeLink = this.removeLink.bind(this);
   };
 
   addLink = (e) => {
-    if (this.state.input.link === '') {
-      return;
-    };
-
     this.setState({
-      links: this.state.links.concat(this.state.input),
-      input: {
-        link: '',
-        id: uniqid()
-      },
-      editing: false
-    });
+      links: this.state.links.concat(uniqid())
+    })
   };
+
+  removeLink = () => {
+
+  }
 
   render() {
     return (
@@ -73,13 +40,10 @@ export class Info extends Component {
         </div>
 
         <div id='info-links'>
-          {/* LINK SECTION MUST BE REDONE */}
           <ul id='info-link-list'>
-            {/* maybe an anchor tag? */}
-            {this.state.links.map((link) => { return <li className='link' key={link.id}>{link.link}</li> })}
+            {this.state.links.map((link, index) => { return <Link key={link} linkIndex={index}></Link> })}
           </ul>
-          <input id='link-input' className={`${this.state.editing ? '' : 'hidden'}`} type='text' value={this.state.input.link} onChange={this.handleChange} onKeyDown={this.handleKeyDown}></input>
-          <button id='add-new-btn' onClick={this.startEditing}>NEW LINK</button>
+          <button id='add-new-btn' onClick={this.addLink}>NEW LINK</button>
         </div>
 
         <div id='info-introduction'>
@@ -89,3 +53,65 @@ export class Info extends Component {
     );
   };
 };
+
+class Link extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+      text: '',
+      editing: true
+    }
+
+    this.linkRef = React.createRef();
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleKeyDown = this.handleKeyDown.bind(this);
+    this.display = this.display.bind(this);
+    this.edit = this.edit.bind(this);
+  }
+
+  handleChange = (e) => {
+    this.setState({
+      text: e.target.value
+    })
+  }
+
+  handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      this.display(e);
+    }
+  };
+
+  display = (e) => {
+    if (e.target.value === '') {
+      return;
+    };
+
+    this.setState({
+      editing: false
+    });
+  };
+
+  edit = (e) => {
+    this.setState({
+      editing: true
+    },
+    function () {
+      this.linkRef.current.focus();
+    }
+    );
+  };
+
+  render() {
+    return (
+      <li className='link'>
+        <div className={`${this.state.editing ? '' : 'hidden'}`}>
+          <input ref={this.linkRef} value={this.state.text} type='text' onChange={this.handleChange} onBlur={this.display} onKeyDown={this.handleKeyDown}></input>
+          <button>X</button>
+        </div>
+        <a className={`${this.state.editing ? 'hidden' : ''}`} onClick={this.edit}>{this.state.text}</a>
+      </li>
+    )
+  }
+}
