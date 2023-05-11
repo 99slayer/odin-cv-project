@@ -35,8 +35,7 @@ export class Info extends Component {
     return (
       <div id='info'>
         <div id='info-name'>
-          <BasicInput placeholder='Name'></BasicInput>
-          <hr className='name-divider'></hr>
+          <BasicInput placeholder='Name' setClass='info-name-input'></BasicInput>
         </div>
 
         <div id='info-personal'>
@@ -114,9 +113,9 @@ class Link extends Component {
 
     return (
       <li className='link'>
-        <div className={`${this.state.editing ? '' : 'hidden'}`}>
-          <input ref={this.linkRef} value={this.state.text} type='text' onChange={this.handleChange} onBlur={this.display} onKeyDown={this.handleKeyDown}></input>
-          <button type='button' onMouseDown={ () => removeLink(linkIndex)}>X</button>
+        <div className={`${this.state.editing ? '' : 'hidden'} link-input-container`}>
+          <input className='link-input' ref={this.linkRef} value={this.state.text} type='text' onChange={this.handleChange} onBlur={this.display} onKeyDown={this.handleKeyDown}></input>
+          <button className='delete-link-btn' type='button' onMouseDown={ () => removeLink(linkIndex)}>X</button>
         </div>
         <a className={`${this.state.editing ? 'hidden' : ''}`} onClick={this.edit}>{this.state.text}</a>
       </li>

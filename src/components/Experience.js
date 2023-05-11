@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { BasicInput } from './BasicInput';
-// import { BasicTextarea } from './BasicTextarea';
 import uniqid from 'uniqid';
 import '../styles/Experience.css';
 
@@ -34,7 +33,7 @@ export class Experience extends Component {
   render() {
     return (
       <div id='experience'>
-        <h2>EXPERIENCE</h2>
+        <p className='heading'>EXPERIENCE</p>
         <ul id='job-container'>
           {this.state.jobs.map((job, index) => { return <Job key={job} remove={this.removeJob} jobIndex={index}></Job> })}
         </ul>
@@ -54,19 +53,19 @@ class Job extends Component {
       active: false
     }
 
-    this.jobActive = this.jobActive.bind(this);
-    this.jobInactive = this.jobInactive.bind(this);
+    this.isActive = this.isActive.bind(this);
+    this.isInactive = this.isInactive.bind(this);
     this.addTask = this.addTask.bind(this);
     this.removeTask = this.removeTask.bind(this);
   }
 
-  jobActive = () => {
+  isActive = () => {
     this.setState({
       active: true
     })
   }
 
-  jobInactive = () => {
+  isInactive = () => {
     this.setState({
       active: false
     })
@@ -87,13 +86,13 @@ class Job extends Component {
     });
   };
 
-  // make sure to sort out any word wrapping issuse
+  // make sure to sort out any word wrapping issues
 
   render() {
-    const { remove, jobIndex } = this.props
+    const { remove, jobIndex } = this.props;
 
     return (
-      <li id={'job-' + this.state.id} className='job' onMouseEnter={this.jobActive} onMouseLeave={this.jobInactive}>
+      <li id={'job-' + this.state.id} className='job' onMouseEnter={this.isActive} onMouseLeave={this.isInactive}>
         <form className='job-inputs'>
           <div className='basic-inputs'>
             <BasicInput setClass='job-time' placeholder='Job time period'></BasicInput>
@@ -105,7 +104,7 @@ class Job extends Component {
           </ul>
           <button className={`${this.state.active ? '' : 'hidden'} new-task-btn`} type='button' onClick={this.addTask}>NEW TASK</button>
         </form>
-        <button className={`${this.state.active ? '' : 'hidden'} remove-btn`} type='button' onMouseDown={() => remove(jobIndex)}>X</button>
+        <button className={`${this.state.active ? '' : 'hidden'} delete-job-btn`} type='button' onMouseDown={() => remove(jobIndex)}>X</button>
       </li>
     )
   }
