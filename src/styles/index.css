@@ -2,12 +2,27 @@
   margin: 0px;
   padding: 0px;
   box-sizing: border-box;
+  font-family: 'Jost', sans-serif;
+}
+
+input {
+  font-size: inherit;
 }
 
 ul,
 ol,
 li {
   list-style: none;
+}
+
+textarea {
+  resize: none;
+}
+
+.heading {
+  margin-top: 2px;
+  font-size: 1.4em;
+  font-weight: 600;
 }
 
 .editable {}

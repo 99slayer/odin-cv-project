@@ -1,0 +1,66 @@
+#education {
+  padding: 10px;
+  border-radius: 14px;
+  background-color: rgb(175, 175, 175);
+}
+
+.new-education-btn {
+  width: 100%;
+}
+
+.education-container {
+  padding: 10px;
+  display: grid;
+  grid-template-columns: 1fr 20px;
+  margin-bottom: 10px;
+  border-radius: 14px;
+}
+
+.education-container:hover {
+  box-shadow: 0px 2px 10px rgb(95, 95, 95);
+}
+
+.education-inputs {
+  display: grid;
+  gap: 2px;
+  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 1fr 2fr;
+}
+
+.delete-education-btn {
+  height: 20px;
+  width: 20px;
+  grid-row: 1/2;
+  grid-column: 2/3;
+  align-self: flex-start;
+  margin-left: 2px;
+}
+
+.education-time {
+  grid-row: 1/2;
+  grid-column: 1/2;
+  font-size: 1.2em;
+  font-weight: 600;
+}
+
+.education-type {
+  grid-row: 1/2;
+  grid-column: 2/3;
+  font-size: 1.2em;
+  font-weight: 600;
+}
+
+.education-type input {
+  width: 100%;
+}
+
+.education-location {
+  grid-row: 2/3;
+  grid-column: 2/3;
+  font-size: 1.2em;
+  font-weight: 600;
+}
+
+.education-location input {
+  width: 100%;
+}

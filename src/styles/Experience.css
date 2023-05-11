@@ -7,8 +7,11 @@ p:hover {
 }
 
 #experience {
+  padding: 10px;
   display: flex;
   flex-direction: column;
+  border-radius: 14px;
+  background-color: rgb(175, 175, 175);
 }
 
 #job-container {
@@ -23,12 +26,12 @@ p:hover {
   padding: 10px;
   /* border: 2px solid rgb(190, 190, 190); */
   border-radius: 14px;
-  background-color: rgb(184, 184, 184);
+  /* background-color: rgb(170, 170, 170); */
 }
 
 .job:hover {
   box-shadow: 0px 2px 5px rgb(95, 95, 95);
-  background-color: gray;
+  /* background-color: gray; */
 }
 
 .job-inputs {
@@ -37,10 +40,11 @@ p:hover {
   grid-template-columns: 1fr 2fr;
 }
 
-.remove-btn {
+.delete-job-btn {
   grid-column: 2/3;
   height: 20px;
   width: 20px;
+  margin-left: 2px;
   align-self: flex-start;
 }
 
@@ -48,45 +52,67 @@ p:hover {
   grid-row: 1/2;
   grid-column: 1/5;
   display: grid;
+  column-gap: 2px;
   grid-template-rows: repeat(2, 1fr);
   grid-template-columns: 1fr 2fr;
 }
 
 .job-time {
   grid-column: 1/2;
+  font-size: 1.2em;
+  font-weight: 600;
 }
 
 .job-title {
   grid-column: 2/3;
+  font-size: 1.2em;
+  font-weight: 600;
+}
+
+.job-title input {
+  width: 100%;
 }
 
 .job-location {
+  margin-bottom: 2px;
   grid-row: 2/3;
   grid-column: 2/3;
+  font-size: 1.2em;
+  font-weight: 600;
+}
+
+.job-location input {
+  width: 100%;
 }
 
 .task-container {
+  display: flex;
+  flex-direction: column;
   grid-row: 2/3;
   grid-column: 2/6;
 }
 
+.task {
+  list-style-type: disc;
+}
+
 .task-textarea {
   display: flex;
-  align-items: center;
 }
 
 .task-textarea textarea {
   width: 100%;
+  margin-bottom: 2px;
 }
 
 .remove-task-btn {
   height: 20px;
   width: 20px;
-  margin-left: 10px;
+  margin-left: 2px;
 }
 
 .new-task-btn {
-  width: 187px;
+  width: 100%;
   grid-row: 3/4;
   grid-column: 2/3;
   justify-self: flex-start;
