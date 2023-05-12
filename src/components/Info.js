@@ -9,12 +9,31 @@ export class Info extends Component {
     super(props);
 
     this.state = {
-      links: []
+      links: [],
+      active: true
     };
 
+    this.isActive = this.isActive.bind(this);
+    this.isInactive = this.isInactive.bind(this);
     this.addLink = this.addLink.bind(this);
     this.removeLink = this.removeLink.bind(this);
   };
+
+  isActive = () => {
+    this.setState({
+      active: true
+    })
+  }
+
+  isInactive = () => {
+    if (this.state.links.length < 1) {
+      return
+    };
+
+    this.setState({
+      active: false
+    })
+  }
 
   addLink = (e) => {
     this.setState({
@@ -44,11 +63,11 @@ export class Info extends Component {
           <BasicInput placeholder='Email'></BasicInput>
         </div>
 
-        <div id='info-links'>
+        <div id='info-links' onMouseEnter={this.isActive} onMouseLeave={this.isInactive}>
           <ul id='info-link-list'>
             {this.state.links.map((link, index) => { return <Link key={link} linkIndex={index} removeLink={this.removeLink}></Link> })}
           </ul>
-          <button id='add-new-btn' onClick={this.addLink}>NEW LINK</button>
+          <button id='add-new-btn' type='button' className={`${this.state.active ? '' : 'hidden'} btn`} onClick={this.addLink}>NEW LINK</button>
         </div>
 
         <div id='info-introduction'>
@@ -113,11 +132,11 @@ class Link extends Component {
 
     return (
       <li className='link'>
-        <div className={`${this.state.editing ? '' : 'hidden'} link-input-container`}>
-          <input className='link-input' ref={this.linkRef} value={this.state.text} type='text' onChange={this.handleChange} onBlur={this.display} onKeyDown={this.handleKeyDown}></input>
-          <button className='delete-link-btn' type='button' onMouseDown={ () => removeLink(linkIndex)}>X</button>
+        <div className={`${this.state.editing ? '' : 'none'} link-input-container`}>
+          <input className='link-input' ref={this.linkRef} value={this.state.text} type='url' onChange={this.handleChange} onBlur={this.display} onKeyDown={this.handleKeyDown}></input>
+          <button className='delete-link-btn delete-btn btn' type='button' onMouseDown={() => removeLink(linkIndex)}>X</button>
         </div>
-        <a className={`${this.state.editing ? 'hidden' : ''}`} onClick={this.edit}>{this.state.text}</a>
+        <a className={`${this.state.editing ? 'none' : ''}`} onClick={this.edit}>{this.state.text}</a>
       </li>
     )
   }
