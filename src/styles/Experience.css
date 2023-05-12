@@ -88,7 +88,7 @@ p:hover {
 }
 
 .task-container {
-  margin-left: 10px;
+  margin-left: 18px;
   display: flex;
   flex-direction: column;
   grid-row: 2/3;

@@ -19,6 +19,7 @@ body {
 }
 
 input {
+  padding-left: 4px;
   font-size: inherit;
 }
 
@@ -28,12 +29,16 @@ li {
   list-style: none;
 }
 
+a {
+  word-wrap: break-word;
+}
+
 p {
   word-wrap: break-word;
-  word-break: break-all;
 }
 
 textarea {
+  padding-left: 4px;
   resize: none;
 }
 

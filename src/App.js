@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Header } from './components/Header';
 import { Info } from './components/Info';
 import { Experience } from './components/Experience';
 import { Education } from './components/Education';
@@ -13,7 +12,6 @@ class App extends Component {
   render() {
     return (
       <div id='app'>
-        <Header></Header>
         <Info></Info>
         <Experience></Experience>
         <Education></Education>
