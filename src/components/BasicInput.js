@@ -55,8 +55,8 @@ export class BasicInput extends Component {
 
     return (
       <div className={setClass}>
-        <input className={`${this.state.editing ? '' : 'hidden'}`} ref={this.inputRef} type='text' size='20' placeholder={placeholder} value={this.state.text} onChange={this.handleChange} onKeyDown={this.handleKeyDown} onBlur={this.display}></input>
-        <p className={`${this.state.editing ? 'hidden' : ''}`} onClick={this.edit}>{this.state.text}</p>
+        <input className={`${this.state.editing ? '' : 'none'}`} ref={this.inputRef} type='text' placeholder={placeholder} value={this.state.text} onChange={this.handleChange} onKeyDown={this.handleKeyDown} onBlur={this.display}></input>
+        <p className={`${this.state.editing ? 'none' : ''}`} onClick={this.edit}>{this.state.text}</p>
       </div>
     )
   }

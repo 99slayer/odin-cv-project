@@ -37,7 +37,7 @@ export class Experience extends Component {
         <ul id='job-container'>
           {this.state.jobs.map((job, index) => { return <Job key={job} remove={this.removeJob} jobIndex={index}></Job> })}
         </ul>
-        <button id='new-job-btn' onClick={this.addJob}>NEW JOB</button>
+        <button id='new-job-btn' className='btn' onClick={this.addJob}>NEW JOB</button>
       </div>
     );
   };
@@ -102,9 +102,9 @@ class Job extends Component {
           <ul className='task-container'>
             {this.state.tasks.map((task, index) => { return <Task key={task} remove={this.removeTask} taskIndex={index}></Task> })}
           </ul>
-          <button className={`${this.state.active ? '' : 'hidden'} new-task-btn`} type='button' onClick={this.addTask}>NEW TASK</button>
+          <button className={`${this.state.active ? '' : 'hidden'} new-task-btn btn`} type='button' onClick={this.addTask}>NEW TASK</button>
         </form>
-        <button className={`${this.state.active ? '' : 'hidden'} delete-job-btn`} type='button' onMouseDown={() => remove(jobIndex)}>X</button>
+        <button className={`${this.state.active ? '' : 'none'} delete-job-btn delete-btn btn`} type='button' onMouseDown={() => remove(jobIndex)}>X</button>
       </li>
     )
   }
@@ -164,11 +164,11 @@ class Task extends Component {
 
     return (
       <li className='task'>
-        <div className={`${this.state.editing ? '' : 'hidden'} task-textarea`}>
+        <div className={`${this.state.editing ? '' : 'none'} task-textarea`}>
           <textarea ref={this.textareaRef} value={this.state.text} onChange={this.handleChange} onBlur={this.display} onKeyDown={this.handleKeyDown}></textarea>
-          <button className='remove-task-btn' type='button' onMouseDown={() => remove(taskIndex)}>X</button>
+          <button className='delete-task-btn delete-btn btn' type='button' onMouseDown={() => remove(taskIndex)}>X</button>
         </div>
-        <p className={`${this.state.editing ? 'hidden' : ''}`} value={this.state.text} onClick={this.edit}>{this.state.text}</p>
+        <p className={`${this.state.editing ? 'none' : ''}`} value={this.state.text} onClick={this.edit}>{this.state.text}</p>
       </li>
     )
   }

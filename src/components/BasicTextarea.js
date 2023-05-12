@@ -55,8 +55,8 @@ export class BasicTextarea extends Component {
 
     return (
       <div className={setClass}>
-        <textarea className={`${this.state.editing ? '' : 'hidden'}`} ref={this.textareaRef} placeholder={placeholder} value={this.state.text} onChange={this.handleChange} onKeyDown={this.handleKeyDown} onBlur={this.display}></textarea>
-        <p className={`${this.state.editing ? 'hidden' : ''}`} onClick={this.edit}>{this.state.text}</p>
+        <textarea className={`${this.state.editing ? '' : 'none'}`} ref={this.textareaRef} placeholder={placeholder} value={this.state.text} onChange={this.handleChange} onKeyDown={this.handleKeyDown} onBlur={this.display}></textarea>
+        <p className={`${this.state.editing ? 'none' : ''}`} onClick={this.edit}>{this.state.text}</p>
       </div>
     )
   }

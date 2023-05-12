@@ -37,7 +37,7 @@ export class Education extends Component {
         <ul>
           {this.state.educations.map((education, index) => { return <BasicEducation key={education} removeEducation={this.removeEducation} educationIndex={index}></BasicEducation> })}
         </ul>
-        <button className='new-education-btn' type='button' onMouseDown={this.addEducation}>NEW EDUCATION</button>
+        <button className='new-education-btn btn' type='button' onMouseDown={this.addEducation}>NEW EDUCATION</button>
       </div>
     );
   };
@@ -77,7 +77,7 @@ class BasicEducation extends Component {
           <BasicInput placeholder='Education type' setClass='education-type'></BasicInput>
           <BasicInput placeholder='Education location' setClass='education-location'></BasicInput>
         </div>
-        <button className={`${this.state.active ? '' : 'hidden'} delete-education-btn`} type='button' onMouseDown={() => removeEducation(educationIndex)}>X</button>
+        <button className={`${this.state.active ? '' : 'none'} delete-education-btn delete-btn btn`} type='button' onMouseDown={() => removeEducation(educationIndex)}>X</button>
       </li>
     )
   }
