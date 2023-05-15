@@ -1,143 +1,99 @@
-import React, { Component } from 'react';
+import React, { useState, useRef } from 'react';
 import uniqid from 'uniqid';
 import { BasicInput } from './BasicInput';
 import { BasicTextarea } from './BasicTextarea';
 import '../styles/Info.css';
 
-export class Info extends Component {
-  constructor(props) {
-    super(props);
+export const Info = () => {
+  const [links, setLinks] = useState([]);
+  const [active, setActive] = useState(true);
 
-    this.state = {
-      links: [],
-      active: true
-    };
-
-    this.isActive = this.isActive.bind(this);
-    this.isInactive = this.isInactive.bind(this);
-    this.addLink = this.addLink.bind(this);
-    this.removeLink = this.removeLink.bind(this);
-  };
-
-  isActive = () => {
-    this.setState({
-      active: true
-    })
+  const isActive = () => {
+    setActive(true);
   }
 
-  isInactive = () => {
-    if (this.state.links.length < 1) {
+  const isInactive = () => {
+    if (links.length < 1) {
       return
     };
 
-    this.setState({
-      active: false
-    })
+    setActive(false);
   }
 
-  addLink = (e) => {
-    this.setState({
-      links: this.state.links.concat(uniqid())
-    })
+  const addLink = () => {
+    setLinks(links.concat(uniqid()));
   };
 
-  removeLink = (id) => {
-    const copy = [...this.state.links];
-    copy.splice(id, 1);
-
-    this.setState({
-      links: copy
-    });
+  const removeLink = (index) => {
+    const copy = links;
+    copy.splice(index, 1);
+    setLinks(copy);
   };
 
-  render() {
-    return (
-      <div id='info'>
-        <div id='info-name'>
-          <BasicInput placeholder='Name' setClass='info-name-input'></BasicInput>
-        </div>
-
-        <div id='info-personal'>
-          <BasicInput placeholder='Address'></BasicInput>
-          <BasicInput placeholder='Phone Number'></BasicInput>
-          <BasicInput placeholder='Email'></BasicInput>
-        </div>
-
-        <div id='info-links' onMouseEnter={this.isActive} onMouseLeave={this.isInactive}>
-          <ul id='info-link-list'>
-            {this.state.links.map((link, index) => { return <Link key={link} linkIndex={index} removeLink={this.removeLink}></Link> })}
-          </ul>
-          <button id='add-new-btn' type='button' className={`${this.state.active ? '' : 'hidden'} btn`} onClick={this.addLink}>NEW LINK</button>
-        </div>
-
-        <div id='info-introduction'>
-          <BasicTextarea placeholder='Introduce yourself' setClass='intro-textarea'></BasicTextarea>
-        </div>
+  return (
+    <div id='info'>
+      <div id='info-name'>
+        <BasicInput placeholder='Name' setClass='info-name-input'></BasicInput>
       </div>
-    );
-  };
+
+      <div id='info-personal'>
+        <BasicInput placeholder='Address'/>
+        <BasicInput placeholder='Phone Number'/>
+        <BasicInput placeholder='Email'/>
+      </div>
+
+      <div id='info-links' onMouseEnter={isActive} onMouseLeave={isInactive}>
+        <ul id='info-link-list'>
+          {links.map((link, index) => { return <Link key={link} linkIndex={index} removeLink={removeLink}></Link> })}
+        </ul>
+        <button id='add-new-btn' type='button' className={`${active ? '' : 'hidden'} btn`} onClick={addLink}>NEW LINK</button>
+      </div>
+
+      <div id='info-introduction'>
+        <BasicTextarea placeholder='Introduce yourself' setClass='intro-textarea'></BasicTextarea>
+      </div>
+    </div>
+  );
 };
 
-class Link extends Component {
-  constructor(props) {
-    super(props);
+const Link = (props) => {
+  const [text, setText] = useState('');
+  const [editing, setEditing] = useState(true);
 
-    this.state = {
-      text: '',
-      editing: true
-    }
+  const linkRef = useRef();
 
-    this.linkRef = React.createRef();
-
-    this.handleChange = this.handleChange.bind(this);
-    this.handleKeyDown = this.handleKeyDown.bind(this);
-    this.display = this.display.bind(this);
-    this.edit = this.edit.bind(this);
+  const handleChange = (e) => {
+    setText(e.target.value);
   }
 
-  handleChange = (e) => {
-    this.setState({
-      text: e.target.value
-    })
-  }
-
-  handleKeyDown = (e) => {
+  const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
-      this.display(e);
+      display(e);
     }
   };
 
-  display = (e) => {
+  const display = (e) => {
     if (e.target.value === '') {
       return;
     };
 
-    this.setState({
-      editing: false
-    });
+    setEditing(false);
   };
 
-  edit = (e) => {
-    this.setState({
-      editing: true
-    },
-    function () {
-      this.linkRef.current.focus();
-    }
-    );
+  const edit = (e) => {
+    setEditing(true);
+    linkRef.current.focus();
   };
 
-  render() {
-    const { removeLink, linkIndex } = this.props
+  const { removeLink, linkIndex } = props;
 
-    return (
-      <li className='link'>
-        <div className={`${this.state.editing ? '' : 'none'} link-input-container`}>
-          <input className='link-input' ref={this.linkRef} value={this.state.text} type='url' onChange={this.handleChange} onBlur={this.display} onKeyDown={this.handleKeyDown}></input>
-          <button className='delete-link-btn delete-btn btn' type='button' onMouseDown={() => removeLink(linkIndex)}>X</button>
-        </div>
-        <a className={`${this.state.editing ? 'none' : ''}`} href={this.state.text} onClick={this.edit}>{this.state.text}</a>
-      </li>
-    )
-  }
+  return (
+    <li className='link'>
+      <div className={`${editing ? '' : 'none'} link-input-container`}>
+        <input className='link-input' ref={linkRef} value={text} type='url' onChange={handleChange} onBlur={display} onKeyDown={handleKeyDown}></input>
+        <button className='delete-link-btn delete-btn btn' type='button' onMouseDown={() => removeLink(linkIndex)}>X</button>
+      </div>
+      <a className={`${editing ? 'none' : ''}`} onClick={edit}>{text}</a>
+    </li>
+  )
 }
