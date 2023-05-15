@@ -136,7 +136,7 @@ class Link extends Component {
           <input className='link-input' ref={this.linkRef} value={this.state.text} type='url' onChange={this.handleChange} onBlur={this.display} onKeyDown={this.handleKeyDown}></input>
           <button className='delete-link-btn delete-btn btn' type='button' onMouseDown={() => removeLink(linkIndex)}>X</button>
         </div>
-        <a className={`${this.state.editing ? 'none' : ''}`} onClick={this.edit}>{this.state.text}</a>
+        <a className={`${this.state.editing ? 'none' : ''}`} href={this.state.text} onClick={this.edit}>{this.state.text}</a>
       </li>
     )
   }
