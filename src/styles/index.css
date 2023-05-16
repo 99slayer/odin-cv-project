@@ -30,6 +30,7 @@ li {
 }
 
 a {
+  cursor: pointer;
   word-wrap: break-word;
 }
 

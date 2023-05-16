@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import uniqid from 'uniqid';
 import { BasicInput } from './BasicInput';
 import { BasicTextarea } from './BasicTextarea';
@@ -58,9 +58,14 @@ export const Info = () => {
 
 const Link = (props) => {
   const [text, setText] = useState('');
-  const [editing, setEditing] = useState(true);
+  const [editing, setEditing] = useState(false);
+  const [inputVisible, setInputVisible] = useState(true);
 
   const linkRef = useRef();
+
+  useEffect(() => {
+    linkRef.current.focus();
+  }, [editing])
 
   const handleChange = (e) => {
     setText(e.target.value);
@@ -78,22 +83,23 @@ const Link = (props) => {
     };
 
     setEditing(false);
+    setInputVisible(false);
   };
 
   const edit = (e) => {
     setEditing(true);
-    linkRef.current.focus();
+    setInputVisible(true);
   };
 
   const { removeLink, linkIndex } = props;
 
   return (
     <li className='link'>
-      <div className={`${editing ? '' : 'none'} link-input-container`}>
+      <div className={`${inputVisible ? '' : 'none'} link-input-container`}>
         <input className='link-input' ref={linkRef} value={text} type='url' onChange={handleChange} onBlur={display} onKeyDown={handleKeyDown}></input>
         <button className='delete-link-btn delete-btn btn' type='button' onMouseDown={() => removeLink(linkIndex)}>X</button>
       </div>
-      <a className={`${editing ? 'none' : ''}`} onClick={edit}>{text}</a>
+      <a className={`${inputVisible ? 'none' : ''}`} onClick={edit}>{text}</a>
     </li>
   )
 }
