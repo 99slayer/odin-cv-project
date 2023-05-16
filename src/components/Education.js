@@ -1,84 +1,53 @@
-import React, { Component } from 'react';
+import React, { useState} from 'react';
 import { BasicInput } from './BasicInput';
 import uniqid from 'uniqid';
 import '../styles/Education.css';
 
-export class Education extends Component {
-  constructor(props) {
-    super(props);
+export const Education = () => {
+  const [educations, setEducations] = useState([]);
 
-    this.state = {
-      educations: []
-    }
-
-    this.addEducation = this.addEducation.bind(this);
-    this.removeEducation = this.removeEducation.bind(this);
-  };
-
-  addEducation = () => {
-    this.setState({
-      educations: this.state.educations.concat(uniqid())
-    })
+  const addEducation = () => {
+    setEducations(educations.concat(uniqid()));
   }
 
-  removeEducation = (id) => {
-    const copy = [...this.state.educations];
-    copy.splice(id, 1);
-
-    this.setState({
-      educations: copy
-    });
+  const removeEducation = (index) => {
+    const copy = [...educations];
+    copy.splice(index, 1);
+    setEducations(copy);
   }
 
-  render() {
-    return (
-      <div id='education'>
-        <p className='heading'>EDUCATION</p>
-        <ul>
-          {this.state.educations.map((education, index) => { return <BasicEducation key={education} removeEducation={this.removeEducation} educationIndex={index}></BasicEducation> })}
-        </ul>
-        <button className='new-education-btn btn' type='button' onMouseDown={this.addEducation}>NEW EDUCATION</button>
-      </div>
-    );
-  };
+  return (
+    <div id='education'>
+      <p className='heading'>EDUCATION</p>
+      <ul>
+        {educations.map((education, index) => { return <BasicEducation key={education} removeEducation={removeEducation} educationIndex={index}></BasicEducation> })}
+      </ul>
+      <button className='new-education-btn btn' type='button' onMouseDown={addEducation}>NEW EDUCATION</button>
+    </div>
+  );
 };
 
-class BasicEducation extends Component {
-  constructor(props) {
-    super(props);
+const BasicEducation = (props) => {
+  const [active, setActive] = useState(false);
 
-    this.state = {
-      active: false
-    }
-
-    this.isActive = this.isActive.bind(this);
-    this.isInactive = this.isInactive.bind(this);
+  const isActive = () => {
+    setActive(true);
   }
 
-  isActive = () => {
-    this.setState({
-      active: true
-    })
+  const isInactive = () => {
+    setActive(false);
   }
 
-  isInactive = () => {
-    this.setState({
-      active: false
-    })
-  }
+  const { removeEducation, educationIndex } = props;
 
-  render() {
-    const { removeEducation, educationIndex } = this.props;
-
-    return (
-      <li className='education-container' onMouseEnter={this.isActive} onMouseLeave={this.isInactive}>
-        <div className='education-inputs'>
-          <BasicInput placeholder='Education time period' setClass='education-time'></BasicInput>
-          <BasicInput placeholder='Education type' setClass='education-type'></BasicInput>
-          <BasicInput placeholder='Education location' setClass='education-location'></BasicInput>
-        </div>
-        <button className={`${this.state.active ? '' : 'none'} delete-education-btn delete-btn btn`} type='button' onMouseDown={() => removeEducation(educationIndex)}>X</button>
-      </li>
-    )
-  }
+  return (
+    <li className='education-container' onMouseEnter={isActive} onMouseLeave={isInactive}>
+      <div className='education-inputs'>
+        <BasicInput placeholder='Education time period' setClass='education-time'/>
+        <BasicInput placeholder='Education type' setClass='education-type'/>
+        <BasicInput placeholder='Education location' setClass='education-location'/>
+      </div>
+      <button className={`${active ? '' : 'none'} delete-education-btn delete-btn btn`} type='button' onMouseDown={() => removeEducation(educationIndex)}>X</button>
+    </li>
+  )
 }
