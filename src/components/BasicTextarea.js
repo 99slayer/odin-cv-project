@@ -1,63 +1,50 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
-// props: placeholder/setClass
-export class BasicTextarea extends Component {
-  constructor(props) {
-    super(props);
+export const BasicTextarea = (props) => {
+  const [text, setText] = useState('');
+  const [editing, setEditing] = useState(false);
+  const [textareaVisible, setTextareaVisible] = useState(true);
 
-    this.state = {
-      text: '',
-      editing: true
+  const textareaRef = useRef();
+
+  useEffect(() => {
+    if (editing === false) {
+      return
     };
 
-    this.textareaRef = React.createRef();
+    textareaRef.current.focus();
+  }, [editing])
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleKeyDown = this.handleKeyDown.bind(this);
-    this.display = this.display.bind(this);
-    this.edit = this.edit.bind(this);
+  const handleChange = (e) => {
+    setText(e.target.value);
   };
 
-  handleChange = (e) => {
-    this.setState({
-      text: e.target.value
-    });
-  };
-
-  handleKeyDown = (e) => {
+  const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
-      this.display(e);
-    }
+      display(e);
+    };
   };
 
-  display = (e) => {
+  const display = (e) => {
     if (e.target.value === '') {
       return;
     };
 
-    this.setState({
-      editing: false
-    });
+    setEditing(false);
+    setTextareaVisible(false);
   };
 
-  edit = (e) => {
-    this.setState({
-      editing: true
-    },
-    function () {
-      this.textareaRef.current.focus();
-    }
-    );
+  const edit = (e) => {
+    setEditing(true);
+    setTextareaVisible(true);
   };
 
-  render() {
-    const { placeholder, setClass } = this.props;
+  const { placeholder, setClass } = props;
 
-    return (
-      <div className={setClass}>
-        <textarea className={`${this.state.editing ? '' : 'none'}`} ref={this.textareaRef} placeholder={placeholder} value={this.state.text} onChange={this.handleChange} onKeyDown={this.handleKeyDown} onBlur={this.display}></textarea>
-        <p className={`${this.state.editing ? 'none' : ''}`} onClick={this.edit}>{this.state.text}</p>
-      </div>
-    )
-  }
+  return (
+    <div className={setClass}>
+      <textarea className={`${textareaVisible ? '' : 'none'}`} ref={textareaRef} placeholder={placeholder} value={text} onChange={handleChange} onKeyDown={handleKeyDown} onBlur={display}></textarea>
+      <p className={`${textareaVisible ? 'none' : ''}`} onClick={edit}>{text}</p>
+    </div>
+  )
 }
