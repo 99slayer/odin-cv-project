@@ -1,175 +1,118 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { BasicInput } from './BasicInput';
 import uniqid from 'uniqid';
 import '../styles/Experience.css';
 
-export class Experience extends Component {
-  constructor(props) {
-    super(props);
+export const Experience = () => {
+  const [jobs, setJobs] = useState([]);
 
-    this.state = {
-      jobs: []
-    };
-
-    this.addJob = this.addJob.bind(this);
-    this.removeJob = this.removeJob.bind(this);
+  const addJob = () => {
+    setJobs(jobs.concat(uniqid()));
   };
 
-  addJob = () => {
-    this.setState({
-      jobs: this.state.jobs.concat(uniqid())
-    });
-  };
-
-  removeJob = (id) => {
-    const copy = [...this.state.jobs];
-    copy.splice(id, 1);
-
-    this.setState({
-      jobs: copy
-    });
+  const removeJob = (index) => {
+    const copy = [...jobs];
+    copy.splice(index, 1);
+    setJobs(copy);
   }
 
-  render() {
-    return (
-      <div id='experience'>
-        <p className='heading'>EXPERIENCE</p>
-        <ul id='job-container'>
-          {this.state.jobs.map((job, index) => { return <Job key={job} remove={this.removeJob} jobIndex={index}></Job> })}
-        </ul>
-        <button id='new-job-btn' className='btn' onClick={this.addJob}>NEW JOB</button>
-      </div>
-    );
-  };
+  return (
+    <div id='experience'>
+      <p className='heading'>EXPERIENCE</p>
+      <ul id='job-container'>
+        {jobs.map((job, index) => { return <Job key={job} remove={removeJob} jobIndex={index}></Job> })}
+      </ul>
+      <button id='new-job-btn' className='btn' onClick={addJob}>NEW JOB</button>
+    </div>
+  );
 };
 
-class Job extends Component {
-  constructor(props) {
-    super(props);
+const Job = (props) => {
+  const [tasks, setTasks] = useState([]);
+  const [active, setActive] = useState(false);
 
-    this.state = {
-      id: uniqid(),
-      tasks: [],
-      active: false
-    }
-
-    this.isActive = this.isActive.bind(this);
-    this.isInactive = this.isInactive.bind(this);
-    this.addTask = this.addTask.bind(this);
-    this.removeTask = this.removeTask.bind(this);
+  const isActive = () => {
+    setActive(true);
   }
 
-  isActive = () => {
-    this.setState({
-      active: true
-    })
+  const isInactive = () => {
+    setActive(false);
   }
 
-  isInactive = () => {
-    this.setState({
-      active: false
-    })
-  }
-
-  addTask = () => {
-    this.setState({
-      tasks: this.state.tasks.concat(uniqid())
-    })
+  const addTask = () => {
+    setTasks(tasks.concat(uniqid()));
   };
 
-  removeTask = (id) => {
-    const copy = [...this.state.tasks];
-    copy.splice(id, 1);
-
-    this.setState({
-      tasks: copy
-    });
+  const removeTask = (index) => {
+    const copy = [...tasks];
+    copy.splice(index, 1);
+    setTasks(copy);
   };
 
-  // make sure to sort out any word wrapping issues
+  const { remove, jobIndex } = props;
 
-  render() {
-    const { remove, jobIndex } = this.props;
-
-    return (
-      <li id={'job-' + this.state.id} className='job' onMouseEnter={this.isActive} onMouseLeave={this.isInactive}>
-        <form className='job-inputs'>
-          <div className='basic-inputs'>
-            <BasicInput setClass='job-time' placeholder='Job time period'></BasicInput>
-            <BasicInput setClass='job-title' placeholder='Job title'></BasicInput>
-            <BasicInput setClass='job-location' placeholder='Job location'></BasicInput>
-          </div>
-          <ul className='task-container'>
-            {this.state.tasks.map((task, index) => { return <Task key={task} remove={this.removeTask} taskIndex={index}></Task> })}
-          </ul>
-          <button className={`${this.state.active ? '' : 'hidden'} new-task-btn btn`} type='button' onClick={this.addTask}>NEW TASK</button>
-        </form>
-        <button className={`${this.state.active ? '' : 'none'} delete-job-btn delete-btn btn`} type='button' onMouseDown={() => remove(jobIndex)}>X</button>
-      </li>
-    )
-  }
+  return (
+    <li id={uniqid()} className='job' onMouseEnter={isActive} onMouseLeave={isInactive}>
+      <form className='job-inputs'>
+        <div className='basic-inputs'>
+          <BasicInput setClass='job-time' placeholder='Job time period'/>
+          <BasicInput setClass='job-title' placeholder='Job title'/>
+          <BasicInput setClass='job-location' placeholder='Job location'/>
+        </div>
+        <ul className='task-container'>
+          {tasks.map((task, index) => { return <Task key={task} remove={removeTask} taskIndex={index}></Task> })}
+        </ul>
+        <button className={`${active ? '' : 'hidden'} new-task-btn btn`} type='button' onClick={addTask}>NEW TASK</button>
+      </form>
+      <button className={`${active ? '' : 'none'} delete-job-btn delete-btn btn`} type='button' onMouseDown={() => remove(jobIndex)}>X</button>
+    </li>
+  )
 }
 
-class Task extends Component {
-  constructor(props) {
-    super(props);
+const Task = (props) => {
+  const [text, setText] = useState('');
+  const [editing, setEditing] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
 
-    this.state = {
-      text: '',
-      editing: true
-    }
+  const textareaRef = useRef();
 
-    this.textareaRef = React.createRef();
+  useEffect(() => {
+    textareaRef.current.focus();
+  }, [editing])
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleKeyDown = this.handleKeyDown.bind(this);
-    this.display = this.display.bind(this);
-    this.edit = this.edit.bind(this);
+  const handleChange = (e) => {
+    setText(e.target.value);
   };
 
-  handleChange = (e) => {
-    this.setState({
-      text: e.target.value
-    });
-  };
-
-  handleKeyDown = (e) => {
+  const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
-      this.display(e);
+      display(e);
     };
   };
 
-  display = (e) => {
+  const display = (e) => {
     if (e.target.value === '') {
       return
     };
 
-    this.setState({
-      editing: false
-    });
+    setEditing(false);
+    setIsVisible(false);
   };
 
-  edit = (e) => {
-    this.setState({
-      editing: true
-    },
-    function () {
-      this.textareaRef.current.focus();
-    }
-    );
+  const edit = () => {
+    setEditing(true);
+    setIsVisible(true);
   };
 
-  render() {
-    const { remove, taskIndex } = this.props
+  const { remove, taskIndex } = props
 
-    return (
-      <li className='task'>
-        <div className={`${this.state.editing ? '' : 'none'} task-textarea`}>
-          <textarea ref={this.textareaRef} value={this.state.text} onChange={this.handleChange} onBlur={this.display} onKeyDown={this.handleKeyDown}></textarea>
-          <button className='delete-task-btn delete-btn btn' type='button' onMouseDown={() => remove(taskIndex)}>X</button>
-        </div>
-        <p className={`${this.state.editing ? 'none' : ''}`} value={this.state.text} onClick={this.edit}>{this.state.text}</p>
-      </li>
-    )
-  }
+  return (
+    <li className='task'>
+      <div className={`${isVisible ? '' : 'none'} task-textarea`}>
+        <textarea ref={textareaRef} value={text} onChange={handleChange} onBlur={display} onKeyDown={handleKeyDown}></textarea>
+        <button className='delete-task-btn delete-btn btn' type='button' onMouseDown={() => remove(taskIndex)}>X</button>
+      </div>
+      <p className={`${isVisible ? 'none' : ''}`} value={text} onClick={edit}>{text}</p>
+    </li>
+  )
 }
