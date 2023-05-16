@@ -1,63 +1,50 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
-// props: placeholder/setClass
-export class BasicInput extends Component {
-  constructor(props) {
-    super(props);
+export const BasicInput = (props) => {
+  const [text, setText] = useState('');
+  const [editing, setEditing] = useState(false);
+  const [inputVisible, setInputVisible] = useState(true);
 
-    this.state = {
-      text: '',
-      editing: true
+  const inputRef = useRef();
+
+  useEffect(() => {
+    if (editing === false) {
+      return
     };
 
-    this.inputRef = React.createRef();
+    inputRef.current.focus();
+  }, [editing])
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleKeyDown = this.handleKeyDown.bind(this);
-    this.display = this.display.bind(this);
-    this.edit = this.edit.bind(this);
+  const handleChange = (e) => {
+    setText(e.target.value);
   };
 
-  handleChange = (e) => {
-    this.setState({
-      text: e.target.value
-    });
-  };
-
-  handleKeyDown = (e) => {
+  const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
-      this.display(e);
-    }
+      display(e);
+    };
   };
 
-  display = (e) => {
+  const display = (e) => {
     if (e.target.value === '') {
       return;
     };
 
-    this.setState({
-      editing: false
-    });
+    setEditing(false);
+    setInputVisible(false);
   };
 
-  edit = (e) => {
-    this.setState({
-      editing: true
-    },
-    function () {
-      this.inputRef.current.focus();
-    }
-    );
+  const edit = (e) => {
+    setEditing(true);
+    setInputVisible(true);
   };
 
-  render() {
-    const { placeholder, setClass } = this.props;
+  const { placeholder, setClass } = props;
 
-    return (
-      <div className={setClass}>
-        <input className={`${this.state.editing ? '' : 'none'}`} ref={this.inputRef} type='text' placeholder={placeholder} value={this.state.text} onChange={this.handleChange} onKeyDown={this.handleKeyDown} onBlur={this.display}></input>
-        <p className={`${this.state.editing ? 'none' : ''}`} onClick={this.edit}>{this.state.text}</p>
-      </div>
-    )
-  }
+  return (
+    <div className={setClass}>
+      <input className={`${inputVisible ? '' : 'none'}`} ref={inputRef} type='text' placeholder={placeholder} value={text} onChange={handleChange} onKeyDown={handleKeyDown} onBlur={display}></input>
+      <p className={`${inputVisible ? 'none' : ''}`} onClick={edit}>{text}</p>
+    </div>
+  )
 }
